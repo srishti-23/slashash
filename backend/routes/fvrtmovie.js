@@ -9,23 +9,24 @@ const connection = mysql.createConnection({
 });
 
 router.post('/favourites', (req, res) => {
-  const { userId, title, description, releaseYear } = req.body;
+  const { userId, Title, Type, Year } = req.body;
 
-  if (!userId || !title) {
-      return res.status(400).json({ message: 'User ID and title are required' });
+  if (!userId || !Title) {
+    return res.status(400).json({ message: 'User ID and Title are required' });
   }
 
-  const query = `INSERT INTO favourites (user_id, title, description, release_year) VALUES (?, ?, ?, ?)`;
+  const query = `INSERT INTO favourites (user_id, Title, Type, \`Year\`) VALUES (?, ?, ?, ?)`;
 
-  connection.query(query, [userId, title, description, releaseYear], (err, results) => {
-      if (err) {
-          console.error('Error adding to favourites:', err);
-          return res.status(500).json({ message: 'Failed to add favourite', error: err.message });
-      }
+  connection.query(query, [userId, Title, Type, Year], (err, results) => {
+    if (err) {
+      console.error('Error adding to favourites:', err);
+      return res.status(500).json({ message: 'Failed to add favourite', error: err.message });
+    }
 
-      res.status(201).json({ message: 'Favourite added successfully', favouriteId: results.insertId });
+    res.status(201).json({ message: 'Favourite added successfully', favouriteId: results.insertId });
   });
 });
+
 
 
 

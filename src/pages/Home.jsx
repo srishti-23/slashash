@@ -29,31 +29,34 @@ const Home = () => {
     setSearchResults(results);
   };
 
-  const handleLikeButton = async (movieId) => {
-    const userId = getCurrentUser(id);
+  const handleLikeButton = async (movie) => {
+    const { Title,  Year,Type } = movie; // Destructure the movie object to get description and releaseYear
+    const userId = 1;  // Assume the userId is 1 for now
+  
     console.log("btn clicked");
-
+  
     try {
-      const response = await fetch("http://localhost:8000/api/addfavourites", {
+      const response = await fetch("http://localhost:8000/api/favourites", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userId, movieId }),
+        body: JSON.stringify({userId,Title,  Year,Type  }), // Pass the properties properly
       });
-
+  
       if (!response.ok) {
         throw new Error("Failed to like movie");
       }
-
+  
       const data = await response.json();
       console.log(data.message);
-
-      setLikedMovies((prev) => [...prev, movieId]);
+  
+      setLikedMovies((prev) => [...prev, Title]);  // Add title to the likedMovies state
     } catch (error) {
       console.error("Error:", error);
     }
   };
+  
 
   const moviesToDisplay = searchResults || movies;
 
@@ -80,6 +83,7 @@ const Home = () => {
                     <Card.Title className="text-truncate">
                       {movie.Title}
                     </Card.Title>
+                   
                     <Card.Text>Year: {movie.Year}</Card.Text>
                     <Card.Text>Type: {movie.Type}</Card.Text>
                     <Button
