@@ -30,7 +30,7 @@ const Home = () => {
   };
 
   const handleLikeButton = async (movieId) => {
-    const userId = 1;
+    const userId = getCurrentUser(id);
     console.log("btn clicked");
 
     try {
